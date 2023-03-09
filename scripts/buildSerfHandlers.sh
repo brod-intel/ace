@@ -27,7 +27,7 @@ T_OK_ICON="[${T_BOLD}${C_GREEN}✓${T_RESET}]"
 
 # Update serf path
 if  [[ -e .git ]]; then
-  SERF_PATH=${PWD}dockerfiles/serf/serf/handlers
+  SERF_PATH=${PWD}/dockerfiles/serf/serf/handlers
 else
 # if run from inside scripts folder
   SERF_PATH=${PWD}/../dockerfiles/serf/serf/handlers
