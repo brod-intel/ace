@@ -110,7 +110,7 @@ else
 mkdir -p ${SERF_PATH}/.gopath
 echo -e  "Downloading Packages.... ${T_RESET} "
 echo -e  "Do not abort ${T_RESET} "
-docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} ds
+docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} go get golang.org/x/sys/unix
 #echo -e  "${blue} GO ${T_OK_ICON} ${T_RESET} "
 docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} go get github.com/sirupsen/logrus
 #echo -e  "${blue} LOGRUS ${T_OK_ICON} ${T_RESET}"
