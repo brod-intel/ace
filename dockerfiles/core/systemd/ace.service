@@ -1,0 +1,16 @@
+[Unit]
+Description=Autonomous Cluster for the Edge
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+StandardError=null
+StandardOutput=null
+WorkingDirectory=/opt/ace/compose
+ExecStart=/bin/sh -c "sleep  $(awk \"BEGIN{print $((1 + RANDOM % 500)) / 10 + 5}\"); /opt/ace/bin/startace.sh"
+ExecStop=/opt/ace/bin/stopace.sh
+
+[Install]
+WantedBy=default.target

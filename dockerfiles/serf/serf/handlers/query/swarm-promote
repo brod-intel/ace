@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/opt/ace/serf/handlers/bin/swarmpromotequery
+
+# serf/handlers/query/swarm-promote

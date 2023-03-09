@@ -1,0 +1,79 @@
+---
+
+name: priority_container
+skip: false
+auto_refresh_enabled: true
+auto_refresh_cycle_time_ms: 1000
+#fs_event_react_enabled: true
+#fs_event_react_delay_ms: 300
+
+#watched_paths:
+#  - /tmp
+
+# Checks to perform
+# All checks must be successful in order to execute the successful actions
+# If any checks fail, the failure actions will be executed
+checks:
+  - name: "Check for priority process utilization"
+    register: "ids"
+    register_exit_code: ""
+    # --label dxoCheck=true --label dxoStat=CPUPerc --label dxoCompare='echo "$DATA > 20.0" | bc -l'
+    # --label dxoSuccess='docker update --cpus=0.01' --label dxoFailure='docker update --cpus="0"' --label dxoAffect=CPUPerc
+    exec: |
+      ID_LIST='';
+      ID_LIST_FAIL='';
+      for id in $(docker ps --filter "label=dxoCheck=true" --format "{{.ID}}"); do
+        STAT=$(docker inspect -f '{{.Config.Labels.dxoStat}}' ${id});
+        COMPARE=$(docker inspect -f '{{.Config.Labels.dxoCompare}}' ${id});
+        DATA=$(echo $(docker stats --no-stream --format "{{.${STAT}}}" ${id}) | tr -dc '.0-9');
+        if [[ ! "$(eval ${COMPARE})" = "0" ]]; then
+          ID_LIST="${ID_LIST} ${id}";
+        else
+          ID_LIST_FAIL="${ID_LIST_FAIL} ${id}";
+        fi
+      done
+      if [[ ! -z ${ID_LIST} ]]; then
+        echo ${ID_LIST};
+      elif [[ ! -z ${ID_LIST_FAIL} ]]; then
+        echo ${ID_LIST_FAIL};
+        exit 1;
+      else
+        echo "none";
+        exit 1;
+      fi
+    # expected_result: "1"
+    expected_exit_code: "0"
+
+actions:
+  successful:
+    - name: "Set all non-priority process to idle"
+      type: "command"
+      exec: |
+        if [ "@@ids@@" != *"ids"* ]; then
+          for pid in "@@ids@@"; do
+            STAT=$(docker inspect -f '{{.Config.Labels.dxoStat}}' ${pid});
+            for id in $(docker ps --filter "label=dxoAffect=${STAT}" --format "{{.ID}}"); do
+              CMD_SUCCESS=$(docker inspect -f '{{.Config.Labels.dxoSuccess}}' ${id});
+              CMD="${CMD_SUCCESS} ${id}";
+              eval ${CMD};
+            done
+          done
+        fi
+      # register: "error"
+      register_exit_code: "0"
+  failure:
+    - name: "Set all non-priority process to full"
+      type: "command"
+      exec: |
+        if [ "@@ids@@" != *"ids"* ]; then
+          for pid in "@@ids@@"; do
+            STAT=$(docker inspect -f '{{.Config.Labels.dxoStat}}' ${pid})
+            for id in $(docker ps --filter "label=dxoAffect=${STAT}" --format "{{.ID}}"); do
+              CMD_FAILURE=$(docker inspect -f '{{.Config.Labels.dxoFailure}}' ${id});
+              CMD="${CMD_FAILURE} ${id}";
+              eval ${CMD};
+            done
+          done
+        fi
+      # register: "error"
+      register_exit_code: "0"

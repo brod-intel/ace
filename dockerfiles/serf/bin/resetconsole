@@ -1,0 +1,17 @@
+#!/bin/bash
+echo "Removing stacks"
+docker stack rm $(docker stack ls --format "{{.Name}}")
+echo "Removing stacks completed"
+
+echo "Removing services deployed."
+docker service rm $(docker service ls -q)
+echo "Removing services deployed completed."
+
+echo "Removing docker processes."
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+echo "Removing docker processes completed."
+
+echo "Removing docker volumes."
+docker volume rm $(docker volume ls -qf dangling=true | xargs)
+echo "Removing docker volumes completed."

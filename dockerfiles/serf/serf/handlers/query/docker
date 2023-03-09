@@ -1,0 +1,5 @@
+#!/bin/sh
+# dockerquery is broken and needs to be fixed.  Using shell command
+# /opt/ace/serf/handlers/bin/dockerquery
+echo -n $(docker $(cat /dev/stdin))
+# serf/handlers/query/docker

@@ -1,0 +1,34 @@
+---
+
+# Specify one or more App Flow directories (relative to the DXO container at runtime)
+# that contain yml files to execute when an event occurs.
+#
+# env variable override:
+# CONFIG_FILEPATHS
+appflow_filepaths:
+  - ./appflows
+
+# Specifies whether or not to periodically print the state of DXO in the log
+# output, based on an interval of log_current_state_interval_seconds.
+#
+# env variable override:
+# LOG_CURRENT_STATE
+log_current_state: true
+
+# Specifies the interval (in seconds) to periodically print the state of
+# DXO in the log output.
+#
+# env variable override:
+# LOG_CURRENT_STATE_INTERVAL_SECONDS
+log_current_state_interval_seconds: 60
+
+# Specifies whether or not to ignore environment variables.
+# If disable_env_config is set to true, the environment variable value
+# of DISABLE_ENV_CONFIG and all environment variables are also ignored.
+# However, if disable_env_config is set to false, but the DISABLE_ENV_CONFIG
+# environment variable is set to true, then all other environment variables will
+# also be ignored.
+#
+# env variable override:
+# DISABLE_ENV_CONFIG
+disable_env_config: false

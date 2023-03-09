@@ -1,0 +1,5 @@
+#!/bin/bash
+
+systemctl stop ace
+docker volume rm ace_gluster_database_vol
+

@@ -1,0 +1,11 @@
+version: "3.3"
+volumes:
+  vol16:
+    driver: edge/plugin-gluster:1.0
+    driver_opts: {}
+services:
+  debian:
+    image: debian
+    command: "touch /mnt/hello.txt"
+    volumes:
+      - vol16:/mnt/   

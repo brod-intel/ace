@@ -1,0 +1,2 @@
+#!/bin/sh
+docker exec -it ace_console_1 bash

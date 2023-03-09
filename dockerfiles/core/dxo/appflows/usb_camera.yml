@@ -1,0 +1,67 @@
+---
+
+name: usb_camera
+skip: false
+auto_refresh_enabled: false
+# auto_refresh_cycle_time_ms: 10000
+fs_event_react_enabled: true
+fs_event_react_delay_ms: 300
+
+watched_paths:
+  - /host/dev
+  # - regexp:^/host/host/dev/video[0-9]*$
+ignored_paths:
+  - /host/dev/null
+  - /host/dev/tty1
+  - regexp:^/host/dev/tty[0-9]*$
+
+# Checks to perform
+# All checks must be successful in order to execute the successful actions
+# If any checks fail, the failure actions will be executed
+checks:
+  - name: "Check if usb carmera is plugged in"
+    register: ""
+    register_exit_code: ""
+    exec: |
+      ls /host/dev/video* > /dev/null 2>&1
+    # expected_result: "1"
+    expected_exit_code: "0"
+
+actions:
+  successful:
+    - name: "Add USB camera"
+      type: "command"
+      exec: |
+        touch /tmp/usbdb
+        echo "Found: $(ls /host/dev/video*)"
+        SHANOW=$(ls /host/dev/video* | sha256sum)
+        SHAPRE=$(cat /tmp/usbdb)
+        if [ "$SHANOW" != "$SHAPRE" ]; then
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-add usb.cameras=true $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          for video in $(ls /host/dev/video*); do
+            echo "Adding node label."
+            while [ "$(serf query --format json --tag role=leader docker "node update --label-add usb.camera.$(basename ${video})=${video} $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          done
+          ls /host/dev/video* | sha256sum > /tmp/usbdb
+        fi
+      # register: "error"
+      register_exit_code: "0"
+  failure:
+    - name: "Remove USB camera"
+      type: "command"
+      exec: |
+        echo "No cameras found"
+        if [ -f /tmp/usbdb ]; then
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.cameras $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video0 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video1 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video2 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video3 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video4 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video5 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video6 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          while [ "$(serf query --format json --tag role=leader docker "node update --label-rm usb.camera.video7 $(hostname)" | jq -r '.Responses | values[]')" = "" ]; do sleep 1.5; done
+          rm /tmp/usbdb
+        fi
+      # register: "error"
+      register_exit_code: "0"
