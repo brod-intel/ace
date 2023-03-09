@@ -17,20 +17,20 @@ fi
 
 # Build GO serf handlers
 msg="Building GO Serf handlers, this can take a few minutes..."
-printBanner "$msg
-logMsg "$msg
+printBanner "$msg"
+logMsg "$msg"
 ./scripts/buildSerfHandlers.sh
 
 # Build Autonomous Cluster for the Edge
 msg="Building ACE, this can take a few minutes..."
-printBanner "$msg
-logMsg "$msg
+printBanner "$msg"
+logMsg "$msg"
 source "scripts/buildACE.sh"
 
 # Build Dynamic Hardware/Software Orchestrator
 msg="Building DXO, this can take a few minutes..."
-printBanner "$msg
-logMsg "$msg
+printBanner "$msg"
+logMsg "$msg"
 source "scripts/buildDXO.sh"
 
 msg="Building Complete"
