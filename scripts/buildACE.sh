@@ -29,7 +29,7 @@ run "(6/9) Building Docker Image App Docker" \
 	../${LOG_FILE}
 
 run "(7/9) Building Docker Image Random Number Generator" \
-	"docker build --rm ${DOCKER_BUILD_ARGS} -t ace/rngd:1.0 -f ./rngd/Dockerfile.rngd ./rngd/" \
+	"docker build --rm ${DOCKER_BUILD_ARGS} -t ace/rngd:1.0 -f ./rngd/Dockerfile ./rngd/" \
 	../${LOG_FILE}
 
 run "(8/9) Building Docker Image Gluster Plugin" \
