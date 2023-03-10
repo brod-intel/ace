@@ -6,7 +6,7 @@ set -u
 source "scripts/textutils.sh"
 
 if [ -z "${TOKEN:-}" ]; then 
-  echo "Please set global vavriable TOKEN with 'export TOKEN='"; 
+  echo -e "Please set global vavriable TOKEN with 'export TOKEN='\n"; 
   exit 1
 fi
 
