@@ -33,7 +33,7 @@ run "(7/9) Building Docker Image Random Number Generator" \
 	../${LOG_FILE}
 
 run "(8/9) Building Docker Image Gluster Plugin" \
-	"cp serf/gluster/updateconf ./glusterfs-plugin/ && docker build --rm ${DOCKER_BUILD_ARGS} -t ace/glusterfs-plugin:1.0 -f ./glusterfs-plugin/Dockerfile ./glusterfs-plugin/" \
+	"cp gluster/updateconf ./glusterfs-plugin/ && docker build --rm ${DOCKER_BUILD_ARGS} -t ace/glusterfs-plugin:1.0 -f ./glusterfs-plugin/Dockerfile ./glusterfs-plugin/" \
 	../${LOG_FILE}
 
 run "(9/9) Building Docker Image ACE Core" \
