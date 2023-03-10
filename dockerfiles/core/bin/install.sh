@@ -7,9 +7,9 @@ set -u
 # APP_INSTALL=${2:-1}
 # SYSTEMD_INSTALL=${3:-1}
 
-if [ ${SYSTEMD_INSTALL} == "" ]; then
-  SYSTEMD_INSTALL="true"
-fi
+# if [ ${SYSTEMD_INSTALL} == "" ]; then
+#   SYSTEMD_INSTALL="true"
+# fi
 
 source "textutils.sh"
 
@@ -23,6 +23,38 @@ else
   export AWS_CLI_PROXY=""
 fi
 
+# while (! docker stats --no-stream > /dev/null ); do
+#   # Docker takes a few seconds to initialize
+#   echo "Waiting for Docker to launch..." 2>&1 | tee -a ${CONSOLE_OUTPUT}
+#   sleep 3
+# done
+
+if [ -d /opt/ace/bin ]; then
+  msg="Skipping Installing App Docker Images and ACE"
+  printBanner "$msg"
+else
+  msg="Installing App Docker Images..."
+  printBanner "$msg"
+  logMsg "$msg"
+  docker run -d --privileged --name app-docker -v /var/lib/app-docker:/var/lib/docker -v /run:/opt/run docker:19.03.12-dind
+  while (! docker exec -i app-docker docker ps > /dev/null 2>&1 ); do 
+    echo "Waiting for Docker to launch..." 
+    sleep 0.5;
+  done
+  docker exec -i app-docker sh -c 'docker -H unix:///opt/run/docker.sock save $(docker -H unix:///opt/run/docker.sock images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker load'
+  docker stop app-docker
+  docker rm app-docker
+  DOCKER_ACE_CONSOLE=$(docker images | grep "_console" | awk '{print $1}')
+  docker run -it --rm --entrypoint="" -v /opt:/opt -v /var/lib/app-docker:/tmp/app-docker ${DOCKER_ACE_CONSOLE} rsync -a /tmp/app-docker/ /opt/ace/app-docker/
+  docker pull docker:19.03.12
+  docker pull docker:19.03.12-dind
+  msg="Installing ACE Files..."
+  printBanner "$msg"
+  logMsg "$msg"
+  mkdr -p /opt/ace/
+  rsync -rtc /ace/ /opt/ace/
+fi
+
 if [ ${INSTALL_TYPE} == "demo" ]; then
   mkdir -p /etc/ssl/ace
   echo '[ "b8+87a00D33FD704a9deB1+DAb5B7Df917DFf7f2172=" ]' > /etc/ssl/ace/keyring.json
@@ -31,34 +63,16 @@ else
   cp -a /opt/ace/node_keys/* /etc/ssl/
 fi
 
-if [ ${APP_INSTALL} == "skip" ]; then
-  msg="Skipping Installing App Docker Images"
-  printBanner "$msg"
-else
-  msg="Installing App Docker Images..."
-  printBanner "$msg"
-  logMsg "$msg"
-  docker run -d --privileged --name app-docker -v /var/lib/app-docker:/var/lib/docker -v /run:/opt/run docker:19.03.12-dind
-  while (! docker exec -i app-docker docker ps > /dev/null 2>&1 ); do sleep 0.5; done
-  docker exec -i app-docker sh -c 'docker -H unix:///opt/run/docker.sock save $(docker -H unix:///opt/run/docker.sock images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker load'
-  docker stop app-docker
-  docker rm app-docker
-  DOCKER_ACE_CONSOLE=$(docker images | grep "edge/console" | awk '{pring $1}')
-  docker run -it --rm --entrypoint="" -v /opt:/opt -v /var/lib/app-docker:/tmp/app-docker ${DOCKER_ACE_CONSOLE} rsync -a /tmp/app-docker/ /opt/ace/app-docker/
-  docker pull docker:19.03.12
-  docker pull docker:19.03.12-dind
-fi
-
-if [ ${SYSTEMD_INSTALL} == "true" ]; then
-  msg="Installing Systemd service..."
-  printBanner "$msg"
-  logMsg "$msg"
-  cp /opt/acesystemd/ace.service /etc/systemd/system/
-  ln -s /etc/systemd/system/ace.service /etc/systemd/system/default.target.wants/ace.service
-  echo ""
-  echo ""
-  echo ""
-  msg="Run systemctl start ace"
-  printBanner "$msg"
-  echo ""
-fi
+# if [ ${SYSTEMD_INSTALL} == "true" ]; then
+#   msg="Installing Systemd service..."
+#   printBanner "$msg"
+#   logMsg "$msg"
+#   cp /opt/acesystemd/ace.service /etc/systemd/system/
+#   ln -s /etc/systemd/system/ace.service /etc/systemd/system/default.target.wants/ace.service
+#   echo ""
+#   echo ""
+#   echo ""
+#   msg="Run systemctl start ace"
+#   printBanner "$msg"
+#   echo ""
+# fi

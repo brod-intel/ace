@@ -7,16 +7,17 @@ RUN apk update && apk add --no-cache \
     bash \
     rsync 
 
-RUN mkdir /opt/ace
+RUN mkdir /ace
 
-COPY /bin /opt/ace/bin
-COPY /demo_certs /opt/ace/demo_certs
-COPY /systemd /opt/ace/systemd
-COPY /dxo /opt/ace/dxo
+COPY /bin /ace/bin
+COPY /demo_certs /ace/demo_certs
+COPY /systemd /ace/systemd
+COPY /dxo /ace/dxo
+COPY /stacks /stacks
 
 ENV INSTALL_TYPE=demo \
     APP_INSTALL=true \
     SYSTEMD_INSTALL=false
 
 ENTRYPOINT ["/bin/bash"]
-CMD ["/opt/ace/bin/install.sh"]
+CMD ["/ace/bin/install.sh"]
