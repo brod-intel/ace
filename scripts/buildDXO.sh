@@ -17,7 +17,7 @@ docker run -i --rm --privileged ${DOCKER_RUN_ARGS} -e TOKEN="${TOKEN}" -v /var/r
     ncurses \
     pv \
     tar \
-    wget
+    wget && \
 
   mkdir /work && \
   cd work && \
