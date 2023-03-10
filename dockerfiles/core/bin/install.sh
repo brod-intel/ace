@@ -57,7 +57,9 @@ fi
 if [ ${INSTALL_TYPE} == "demo" ]; then
   mkdir -p /etc/ssl/ace
   echo '[ "b8+87a00D33FD704a9deB1+DAb5B7Df917DFf7f2172=" ]' > /etc/ssl/ace/keyring.json
-  run "Installing certificates..." "cp /opt/ace/demo_certs/* /etc/ssl/"   ${LOG_FILE}
+  msg="Installing certificates..."
+  echo "$msg"
+  cp /opt/ace/demo_certs/* /etc/ssl/
 else
   cp -a /opt/ace/node_keys/* /etc/ssl/
 fi
