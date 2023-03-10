@@ -41,7 +41,7 @@ else
     sleep 0.5;
   done
   # docker exec -i app-docker sh -c 'docker -H unix:///opt/run/docker.sock save $(docker -H unix:///opt/run/docker.sock images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker load'
-  docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker exec -t $(docker ps | grep _app-docker_ | awk '{print $1}') docker load
+  docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker exec -i $(docker ps | grep _app-docker_ | awk '{print $1}') docker load
   # docker stop app-docker
   # docker rm app-docker
   DOCKER_ACE_CONSOLE=$(docker images | grep "_console" | awk '{print $1}')
