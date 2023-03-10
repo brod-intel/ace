@@ -1,7 +1,7 @@
 version: "3"
 
 volumes:
-  ace_volume:
+  core_volume:
     driver: local
   docker_app_commands:
     driver: local
@@ -20,7 +20,7 @@ services:
     privileged: true
     restart: "no"
     volumes:
-      - ace_volume:/opt
+      - core_volume:/opt
       - /etc/ssl:/etc/ssl
       - /var/lib/app-docker:/var/lib/app-docker
       - /run:/run
@@ -97,7 +97,7 @@ services:
       - /var/run/docker.sock:/opt/system-docker.sock
       - /mnt/fakevol:/mnt:shared
       - /mnt/glusterfs/docker-volumes:/var/lib/docker-volumes/gluster:shared
-      - ace_volume:/opt
+      - core_volume:/opt
       - /var/log:/var/log:shared
       - /:/host
     depends_on:
@@ -136,7 +136,7 @@ services:
       - gluster_creds_vol:/etc/ace
       - /var/log/glusterfs:/var/log/glusterfs:shared
       - /dev:/dev
-      - ace_volume:/opt
+      - core_volume:/opt
       - /etc/ssl:/etc/ssl
     depends_on:
       - app-docker
@@ -156,7 +156,7 @@ services:
       - docker_pid_vol:/var/run
       - /mnt:/mnt:shared
       - /dev:/dev
-      - ace_volume:/opt
+      - core_volume:/opt
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
       - /var/log/glusterfs:/var/log/glusterfs:shared
       - /etc/ssl:/etc/ssl
@@ -187,7 +187,7 @@ services:
     volumes:
       - docker_pid_vol:/var/run
       - /var/run/docker.sock:/opt/system-docker.sock
-      - ace_volume:/opt
+      - core_volume:/opt
       - /dev:/dev
       - gluster_creds_vol:/etc/ace
       - /etc/ssl:/etc/ssl
@@ -211,7 +211,7 @@ services:
     # privileged: true
     # userns_mode: host
     volumes:
-      - ace_volume:/opt
+      - core_volume:/opt
       - gluster_creds_vol:/etc/ace
     depends_on:
       - app-docker
@@ -268,7 +268,7 @@ services:
       #  Uncomment the below line after keys are added
       #- /etc/ssl/glusterfs.ca:/etc/ssl/certs/ace.crt
       - /etc/ssl:/etc/ssl
-      - ace_volume:/opt
+      - core_volume:/opt
       - /var/log/ace:/var/log
       - /dev/tty2:/dev/tty0
     depends_on:
@@ -316,7 +316,7 @@ services:
       - gluster_database_vol:/var/lib/glusterd
       - /mnt/clusterfs/dxo/appflows:/cfsappflows
       - /mnt/fakevol:/mnt:shared
-      - ace_volume:/opt
+      - core_volume:/opt
       - /var/log:/var/log:shared
       - /var/run/docker.sock:/opt/system-docker.sock
       - /:/host
