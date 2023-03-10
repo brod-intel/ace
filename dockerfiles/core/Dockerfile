@@ -1,7 +1,7 @@
 # Copyright (C) 2020 Intel Corporation
 # SPDX-License-Identifier: BSD-3-Clause
 
-FROM alpine:3.16
+FROM docker:20.10.23-cli
 
 RUN apk update && apk add --no-cache \
     bash \
