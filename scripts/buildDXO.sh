@@ -1,6 +1,10 @@
 #!/bin/bash
 
-if [ -z "${TOKEN}" ]; then 
+
+# we want to have some checks done for undefined variables
+set -u
+
+if [ -z "${TOKEN:-}" ]; then 
   echo "Please set global vavriable TOKEN with 'export TOKEN='"; 
   exit 1
 fi
