@@ -11,7 +11,7 @@ set -u
 #   SYSTEMD_INSTALL="true"
 # fi
 
-source "textutils.sh"
+# source "textutils.sh"
 
 if [ "${HTTP_PROXY+x}" != "" ]; then
   export DOCKER_BUILD_ARGS="--build-arg http_proxy='${http_proxy}' --build-arg https_proxy='${https_proxy}' --build-arg HTTP_PROXY='${HTTP_PROXY}' --build-arg HTTPS_PROXY='${HTTPS_PROXY}' --build-arg NO_PROXY='localhost,127.0.0.1'"
@@ -31,11 +31,10 @@ fi
 
 if [ -d /opt/ace/bin ]; then
   msg="Skipping Installing App Docker Images and ACE"
-  printBanner "$msg"
+  echo "$msg"
 else
   msg="Installing App Docker Images..."
-  printBanner "$msg"
-  logMsg "$msg"
+  echo "$msg"
   # docker run -d --privileged --name app-docker -v /var/lib/app-docker:/var/lib/docker -v /run:/opt/run docker:19.03.12-dind
   while (! docker exec -i $(docker ps | grep _app-docker_ | awk '{print $1}') docker ps > /dev/null 2>&1 ); do 
     echo "Waiting for Docker to launch..." 
@@ -50,8 +49,7 @@ else
   docker pull docker:19.03.12
   docker pull docker:19.03.12-dind
   msg="Installing ACE Files..."
-  printBanner "$msg"
-  logMsg "$msg"
+  echo "$msg"
   mkdr -p /opt/ace/
   rsync -rtc /ace/ /opt/ace/
 fi
@@ -66,14 +64,13 @@ fi
 
 # if [ ${SYSTEMD_INSTALL} == "true" ]; then
 #   msg="Installing Systemd service..."
-#   printBanner "$msg"
-#   logMsg "$msg"
+#   echo "$msg"
 #   cp /opt/acesystemd/ace.service /etc/systemd/system/
 #   ln -s /etc/systemd/system/ace.service /etc/systemd/system/default.target.wants/ace.service
 #   echo ""
 #   echo ""
 #   echo ""
 #   msg="Run systemctl start ace"
-#   printBanner "$msg"
+#   echo "$msg"
 #   echo ""
 # fi
