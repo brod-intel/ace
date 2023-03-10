@@ -1,4 +1,4 @@
-FROM edge/glusterfs:7
+FROM ace/glusterfs:7
 LABEL maintainer Bryan J Rodriguez <bryan.j.rodriguez@intel.com>
 
 ARG GLUSTERREST_PASSWORD="password"

@@ -1,6 +1,6 @@
 #!/bin/sh
 set -e
-PLUGIN_NAME=edge/glusterfs-plugin
+PLUGIN_NAME=ace/glusterfs-plugin
 PLUGIN_TAG=1.0
 PLUGIN_IMAGE=${PLUGIN_NAME}:${PLUGIN_TAG}
 
