@@ -52,6 +52,7 @@ else
   echo "$msg"
   mkdir -p /opt/ace/
   rsync -rtc /ace/ /opt/ace/
+  rsync -rtc /stacks /opt/
 fi
 
 if [ ${INSTALL_TYPE} == "demo" ]; then

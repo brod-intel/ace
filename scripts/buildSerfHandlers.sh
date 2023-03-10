@@ -72,13 +72,13 @@ compile_handlers() {
         OUTPUT=`echo ${file_in_src} | grep  "\.go" | awk -F"/" '{ print $NF}' | sed 's/.go//g'`
         mkdir -p ${SERF_PATH}/bin
 
-#        docker run --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}:/data ${GO_VERSION} go build -o /data/bin/${OUTPUT} /data/src/${file_in_src}
-
+        echo "Compiling ${file_in_src}..."
         docker run --rm ${DOCKER_RUN_ARGS} -e "CGO_ENABLED=0" -v ${SERF_PATH}/.gopath/src/golang.org:/data/src/golang.org  -v ${SERF_PATH}/.gopath/src/github.com:/data/src/github.com -e "GOPATH=/data/" -v ${SERF_PATH}/../../glusterfs-lib/acegluster:/data/src/acegluster   -v ${SERF_PATH}/src/helpers:/data/src/helpers -v ${SERF_PATH}/src/member-update-x:/data/src/memberupdatex -v ${SERF_PATH}/bin:/data/bin -v ${SERF_PATH}/src:/data/serf ${GO_VERSION} go build -a -installsuffix cgo -o /data/bin/${OUTPUT} /data/serf/${file_in_src}
+        echo "[done]"
 
         # Compiling will fail because of the undefined variables.  Something changed with GO Lang, we didn't change the version.  Forcing success
-        # build_status=$?
-        build_status=0
+        build_status=$?
+        # build_status=0
         if [ $build_status -gt 0 ]; then
             echo -e " Build ${T_ERR_ICON} ${T_RESET}"
         else
@@ -86,6 +86,8 @@ compile_handlers() {
         fi
 
         build_status_accumulated=`expr $build_status + $build_status_accumulated`
+    else
+        echo "File '${file}' does not exist";
     fi
 }
 
@@ -130,7 +132,7 @@ compile_updateconf
 # compile the handler source files
 for i in `ls ${SERF_PATH}/src/*.go | grep -v test`
 do
-    echo "$i"  | awk -F"zeroConf/" '{ print $2}'
+    echo "$i"  | awk -F"dockerfiles/serf/" '{ print $2}'
     lint_handlers $i
     compile_handlers $i
 done
@@ -139,7 +141,7 @@ done
 # compile the handler source files
 for i in `ls ${SERF_PATH}/src/query/*.go`
 do
-    echo "$i" | awk -F"zeroConf/" '{ print $2}'
+    echo "$i" | awk -F"dockerfiles/serf/" '{ print $2}'
     lint_handlers $i
     compile_handlers $i
 done
