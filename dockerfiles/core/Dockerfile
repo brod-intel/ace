@@ -13,6 +13,7 @@ COPY /bin /ace/bin
 COPY /demo_certs /ace/demo_certs
 COPY /systemd /ace/systemd
 COPY /dxo /ace/dxo
+COPY /gluster /ace/gluster
 COPY /stacks /stacks
 
 ENV INSTALL_TYPE=demo \

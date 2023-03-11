@@ -268,7 +268,7 @@ services:
       #  Uncomment the below line after keys are added
       #- /etc/ssl/glusterfs.ca:/etc/ssl/certs/ace.crt
       - /etc/ssl:/etc/ssl
-      - core_volume:/opt
+      - core_volume:/core
       - /var/log/ace:/var/log
       - /dev/tty2:/dev/tty0
     depends_on:
