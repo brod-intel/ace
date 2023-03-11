@@ -786,7 +786,7 @@ func getSystemDockerSock() string {
 
 	if len(sock) == 0 {
 		acelog.Error("SYSTEM_DOCKER_SOCK is not defined in ENV. Setting up with default path.")
-		sock = "/opt/system-docker.sock"
+		sock = "/aux/system-docker.sock"
 	}
 	return "unix://" + sock
 

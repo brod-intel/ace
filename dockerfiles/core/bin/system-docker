@@ -1,2 +1,2 @@
 #!/bin/sh
-docker -H unix:///opt/system-docker.sock "$@"
+docker -H unix:///aux/system-docker.sock "$@"
