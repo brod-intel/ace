@@ -109,10 +109,10 @@ else
 mkdir -p ${SERF_PATH}/.gopath
 echo -e  "Downloading Packages.... ${T_RESET} "
 echo -e  "Do not abort ${T_RESET} "
-docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} bash -c "go get golang.org/x/sys/unix && git -C ${GOPATH}/src/golang.org/x/sys reset --hard a90be440212d0ff450b66ce871c8b725fbc60f7c"
+docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} bash -c "go get golang.org/x/sys/unix; git -C ${GOPATH}/src/golang.org/x/sys reset --hard a90be440212d0ff450b66ce871c8b725fbc60f7c"
 docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} go get github.com/sirupsen/logrus
-docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} bash -c "go get github.com/hashicorp/serf/client && git -C ${GOPATH}/src/github.com/hashicorp/serf/client checkout v0.8.4"
-docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} bash -c "go get github.com/docker/docker && git -C ${GOPATH}/src/github.com/docker/docker checkout v19.03.4"
+docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} bash -c "go get github.com/hashicorp/serf/client; git -C ${GOPATH}/src/github.com/hashicorp/serf/client checkout v0.8.4"
+docker run --net=host --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/.gopath:/data/ ${GO_VERSION} bash -c "go get github.com/docker/docker; git -C ${GOPATH}/src/github.com/docker/docker checkout v19.03.4"
 echo -e  "Begin Compilation ${T_RESET} "
 fi
 
