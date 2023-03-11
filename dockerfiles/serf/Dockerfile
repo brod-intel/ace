@@ -33,7 +33,6 @@ RUN set -x \
 COPY --from=hashibase /usr/local/bin/* /usr/local/bin/
 COPY serf/ /opt/ace/serf/
 COPY gluster/ /opt/ace/gluster/
-COPY bin/ /opt/ace/bin/
 
 WORKDIR /
 
