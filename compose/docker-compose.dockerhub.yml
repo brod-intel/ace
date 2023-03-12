@@ -31,8 +31,6 @@ services:
     restart: "no"
     volumes:
       - /etc/app-docker:/etc/docker
-    # depends_on:
-    #   - core
 
   app-docker:
     image: brodintel/app-docker:1.1
@@ -219,7 +217,7 @@ services:
 
   serf-agent:
     image: brodintel/serf:0.8.4_1
-    entrypoint: /opt/ace/serf/docker-entrypoint.sh
+    entrypoint: /opt/ace/serf/init.sh
     environment:
       - ACE_BASE_PATH=/opt/ace
       - GLUSTER_MOUNT_PATH=/mnt
@@ -246,7 +244,7 @@ services:
       - SWARM_RESTORE_TIME_IN_SECONDS=60
       - LOG_LEVEL=1
       - SYSTEM_DOCKER_SOCK=/aux/system-docker.sock
-      - UUID="${UUID:-afb6dca1-4671-47f0-bf41-9fed5d6625a7}"
+      - UUID=${UUID}
     command: agent -keyring-file /etc/ssl/ace/keyring.json -tags-file=/opt/ace/serf/data/tags.json # -log-level=debug # -rejoin -snapshot /opt/ace/serf/data/snapshot
     restart: unless-stopped
     ipc: host

@@ -7,6 +7,11 @@ SERF_HANDLERS_PATH=${SERF_HANDLERS_PATH?required}
 SERF_CONFIG_FILE=${SERF_CONFIG_FILE?required}
 SERF_CONFIG_FILE_PATH=${SERF_CONFIG_DIR}/${SERF_CONFIG_FILE}
 
+if [ -z "${UUID+x}" ]; fi
+    ACE_CONSOLE=$(system-docker images | grep console-alpine | head -n 1 | awk '{print $3}')
+    export UUID=$(system-docker run -i --rm --entrypoint="" ${ACE_CONSOLE} uuidgen)
+fi
+
 # check if config file doesn't exist locally
 if [ ! -f $SERF_CONFIG_FILE_PATH ]; then 
   # check if config file doesn't exist in usb-mount volume
