@@ -27,7 +27,6 @@ services:
 
   dho:
     image: brodintel/dho:1.1
-    command: /opt/ace/dho/dho-init.sh
     privileged: true
     restart: "no"
     volumes:
