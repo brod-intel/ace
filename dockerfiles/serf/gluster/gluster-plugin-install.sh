@@ -1,8 +1,10 @@
 #!/bin/sh
 set -e
-PLUGIN_NAME=ace/glusterfs-plugin
-PLUGIN_TAG=1.0
+PLUGIN_NAME=brodintel/ace-glusterfs-plugin
+PLUGIN_TAG=1.1
 PLUGIN_IMAGE=${PLUGIN_NAME}:${PLUGIN_TAG}
+
+docker -H unix://${SYSTEM_DOCKER_SOCK} pull ${PLUGIN_IMAGE}
 
 echo -e "==> create rootfs directory in ./plugin/rootfs"
 mkdir -p ./plugin/rootfs
