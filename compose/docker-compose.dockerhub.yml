@@ -247,7 +247,7 @@ services:
       - SWARM_RESTORE_TIME_IN_SECONDS=60
       - LOG_LEVEL=1
       - SYSTEM_DOCKER_SOCK=/aux/system-docker.sock
-      - UUID=${UUID:afb6dca1-4671-47f0-bf41-9fed5d6625a7}
+      - UUID="${UUID:-afb6dca1-4671-47f0-bf41-9fed5d6625a7}"
     command: agent -keyring-file /etc/ssl/ace/keyring.json -tags-file=/opt/ace/serf/data/tags.json # -log-level=debug # -rejoin -snapshot /opt/ace/serf/data/snapshot
     restart: unless-stopped
     ipc: host
