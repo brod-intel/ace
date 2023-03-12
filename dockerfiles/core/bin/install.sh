@@ -36,15 +36,15 @@ else
   msg="Installing App Docker Images..."
   echo "$msg"
   # docker run -d --privileged --name app-docker -v /var/lib/app-docker:/var/lib/docker -v /run:/opt/run docker:19.03.12-dind
-  while (! docker exec -i $(docker ps | grep _app-docker_ | awk '{print $1}') docker ps > /dev/null 2>&1 ); do 
+  while (! docker exec -i $(docker ps | grep [_-]app-docker[_-] | awk '{print $1}') docker ps > /dev/null 2>&1 ); do 
     echo "Waiting for Docker to launch..." 
     sleep 0.5;
   done
   # docker exec -i app-docker sh -c 'docker -H unix:///opt/run/docker.sock save $(docker -H unix:///opt/run/docker.sock images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker load'
-  docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker exec -i $(docker ps | grep _app-docker_ | awk '{print $1}') docker load
+  docker save $(docker images --format "{{.Repository}}:{{.Tag}}" | grep glusterfs-plugin) | docker exec -i $(docker ps | grep [_-]app-docker[_-] | awk '{print $1}') docker load
   # docker stop app-docker
   # docker rm app-docker
-  DOCKER_ACE_CONSOLE=$(docker images | grep "_console" | awk '{print $1}')
+  DOCKER_ACE_CONSOLE=$(docker images | grep "[_-]console" | awk '{print $1}')
   docker run -it --rm --entrypoint="" -v /opt:/opt -v /var/lib/app-docker:/tmp/app-docker ${DOCKER_ACE_CONSOLE} rsync -a /tmp/app-docker/ /opt/ace/app-docker/
   docker pull docker:19.03.12
   docker pull docker:19.03.12-dind
@@ -52,7 +52,6 @@ else
   echo "$msg"
   mkdir -p /opt/ace/
   rsync -rtc /ace/ /opt/ace/
-  rsync -rtc /stacks /opt/
 fi
 
 if [ ! -f /etc/ssl/dhparam.pem ]; then
