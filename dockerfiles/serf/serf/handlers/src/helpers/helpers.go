@@ -167,7 +167,7 @@ func ExecuteCommand(cmdvalue string) bool {
 
 	cmd, err := exec.Command("sh", "-c", cmdvalue).Output()
 	if err != nil {
-		acelog.Error("Error in executing the command cmdvalue ", err.Error())
+		acelog.Error("Error in executing the command "+cmdvalue, err.Error())
 		return false
 	}
 
