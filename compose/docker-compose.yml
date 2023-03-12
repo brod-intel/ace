@@ -16,7 +16,7 @@ volumes:
 
 services:
   core:
-    image: ace/core:1.0
+    image: ace/core:1.1
     privileged: true
     restart: "no"
     volumes:
@@ -26,7 +26,7 @@ services:
       - /run:/run
 
   dho:
-    image: ace/dho:1.0
+    image: ace/dho:1.1
     command: /opt/ace/dho/dho-init.sh
     privileged: true
     restart: "no"
@@ -36,7 +36,7 @@ services:
     #   - core
 
   app-docker:
-    image: ace/app-docker:1.0
+    image: ace/app-docker:1.1
     logging:
       driver: "json-file"
       options:
@@ -72,7 +72,7 @@ services:
       - core
 
   console:
-    image: ace/console-alpine:1.0
+    image: ace/console-alpine:1.1
     environment:
       - HTTP_PROXY
       - HTTPS_PROXY
@@ -106,7 +106,7 @@ services:
       - core
 
   gluster-security-enabler:
-    image:  ace/console-alpine:1.0
+    image:  ace/console-alpine:1.1
     # To enable glusterd network encryption, uncomment the below line
     entrypoint: [sh, -c, "touch /var/lib/glusterd/secure-access"]
     restart: "no"
@@ -117,7 +117,7 @@ services:
       - gluster-rest
 
   gluster-rest:
-    image: ace/glusterfs-rest:7
+    image: ace/glusterfs-rest:7.1
     command: ["--certfile","/etc/ssl/glusterrestd.pem" ,"--keyfile", "/etc/ssl/glusterrestd.key", "--ca-certs", "/etc/ssl/glusterfs.ca"]
     environment:
       - PORT=5000
@@ -143,7 +143,7 @@ services:
       - core
 
   gluster-server:
-    image: ace/glusterfs-rest:7
+    image: ace/glusterfs-rest:7.1
     entrypoint: dumb-init glusterd --no-daemon --pid-file=/var/run/glusterd.pid --log-level=INFO --log-file=/dev/stdout
     restart: unless-stopped
     privileged: true
@@ -197,7 +197,7 @@ services:
       - core
 
   gluster-connect:
-    image: ace/console-alpine:1.0
+    image: ace/console-alpine:1.1
     entrypoint: [sh, -c, /opt/ace/gluster/gluster-connect.sh]
     command: []
     environment:
@@ -219,7 +219,7 @@ services:
       - core
 
   serf-agent:
-    image: ace/serf:0.8.4
+    image: ace/serf:0.8.4_1
     entrypoint: /opt/ace/serf/docker-entrypoint.sh
     environment:
       - ACE_BASE_PATH=/opt/ace
@@ -277,7 +277,7 @@ services:
       - core
 
   dxo:
-    image: ace/dxo:1.0
+    image: ace/dxo:1.1
     logging:
       driver: "json-file"
       options:
