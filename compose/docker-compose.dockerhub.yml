@@ -16,7 +16,7 @@ volumes:
 
 services:
   core:
-    image: brodintel/core:1.1
+    image: brodintel/ace-core:1.1
     privileged: true
     restart: "no"
     volumes:
@@ -26,14 +26,14 @@ services:
       - /run:/run
 
   dho:
-    image: brodintel/dho:1.1
+    image: brodintel/ace-dho:1.1
     privileged: true
     restart: "no"
     volumes:
       - /etc/app-docker:/etc/docker
 
   app-docker:
-    image: brodintel/app-docker:1.1
+    image: brodintel/ace-app-docker:1.1
     logging:
       driver: "json-file"
       options:
@@ -69,7 +69,7 @@ services:
       - core
 
   console:
-    image: brodintel/console-alpine:1.1
+    image: brodintel/ace-console-alpine:1.1
     environment:
       - HTTP_PROXY
       - HTTPS_PROXY
@@ -114,7 +114,7 @@ services:
       - gluster-rest
 
   gluster-rest:
-    image: brodintel/glusterfs-rest:7.1
+    image: brodintel/ace-glusterfs-rest:7.1
     command: ["--certfile","/etc/ssl/glusterrestd.pem" ,"--keyfile", "/etc/ssl/glusterrestd.key", "--ca-certs", "/etc/ssl/glusterfs.ca"]
     environment:
       - PORT=5000
@@ -140,7 +140,7 @@ services:
       - core
 
   gluster-server:
-    image: brodintel/glusterfs-rest:7.1
+    image: brodintel/ace-glusterfs-rest:7.1
     entrypoint: dumb-init glusterd --no-daemon --pid-file=/var/run/glusterd.pid --log-level=INFO --log-file=/dev/stdout
     restart: unless-stopped
     privileged: true
@@ -194,7 +194,7 @@ services:
       - core
 
   gluster-connect:
-    image: brodintel/console-alpine:1.1
+    image: brodintel/ace-console-alpine:1.1
     entrypoint: [sh, -c, /opt/ace/gluster/gluster-connect.sh]
     command: []
     environment:
@@ -216,7 +216,7 @@ services:
       - core
 
   serf-agent:
-    image: brodintel/serf:0.8.4_1
+    image: brodintel/ace-serf:0.8.4_1
     entrypoint: /opt/ace/serf/init.sh
     environment:
       - ACE_BASE_PATH=/opt/ace
@@ -275,7 +275,7 @@ services:
       - core
 
   dxo:
-    image: brodintel/dxo:1.1
+    image: brodintel/ace-dxo:1.1
     logging:
       driver: "json-file"
       options:
