@@ -144,7 +144,7 @@ services:
 
   gluster-server:
     image: ace/glusterfs-rest:7
-    entrypoint: dumb-init glusterd --no-daemon --pid-file=/var/run/glusterd.pid
+    entrypoint: dumb-init glusterd --no-daemon --pid-file=/var/run/glusterd.pid --log-level=INFO --log-file=/dev/stdout
     restart: unless-stopped
     privileged: true
     ipc: host
