@@ -5,6 +5,7 @@ FROM docker:20.10.23-cli
 
 RUN apk update && apk add --no-cache \
     bash \
+    openssl \
     rsync 
 
 RUN mkdir /ace

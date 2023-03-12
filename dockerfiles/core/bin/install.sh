@@ -55,6 +55,10 @@ else
   rsync -rtc /stacks /opt/
 fi
 
+if [ ! -f /etc/ssl/dhparam.pem ]; then
+  openssl dhparam -out /etc/ssl/dhparam.pem 2048
+fi
+
 if [ ${INSTALL_TYPE} == "demo" ]; then
   mkdir -p /etc/ssl/ace
   echo '[ "b8+87a00D33FD704a9deB1+DAb5B7Df917DFf7f2172=" ]' > /etc/ssl/ace/keyring.json
