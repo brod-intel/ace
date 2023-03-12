@@ -231,7 +231,7 @@ services:
       - MANAGER=manager
       - WORKER=worker
       - DUMB_INIT_DEBUG=1
-      - PATH=/usr/local/bin:/usr/app-local/bin:/opt/ace/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin
+      - PATH=/usr/local/bin:/usr/app-local/bin:/core/ace/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin
       - SERF_BIND_PORT=7945
       - SERF_CONFIG_DIR=/opt/ace/serf/config
       - SERF_DATA_DIR=/opt/ace/serf/data
@@ -247,7 +247,7 @@ services:
       - SWARM_RESTORE_TIME_IN_SECONDS=60
       - LOG_LEVEL=1
       - SYSTEM_DOCKER_SOCK=/aux/system-docker.sock
-      - UUID=${UUID}
+      - UUID=${UUID:afb6dca1-4671-47f0-bf41-9fed5d6625a7}
     command: agent -keyring-file /etc/ssl/ace/keyring.json -tags-file=/opt/ace/serf/data/tags.json # -log-level=debug # -rejoin -snapshot /opt/ace/serf/data/snapshot
     restart: unless-stopped
     ipc: host
