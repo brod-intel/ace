@@ -7,7 +7,7 @@ networks:
 
 volumes:
   portainer_data:
-    driver: edge/glusterfs-plugin:1.0
+    driver: edge/glusterfs-plugin:1.1
     driver_opts: {}
 
 services:
@@ -33,9 +33,10 @@ services:
 
   portainer:
     image: portainer/portainer-ce
-    command: -H tcp://tasks.agent:9001 --tlsskipverify --templates https://raw.githubusercontent.com/brod-intel/cfa-demo/master/template2.json
+    command: -H tcp://tasks.agent:9001 --tlsskipverify --templates https://raw.githubusercontent.com/brod-intel/cfa-demo/master/template2.0.json
     ports:
       - "9000:9000"
+      - "9443:9443"
       - "8000:8000"
     volumes:
       - portainer_data:/data
