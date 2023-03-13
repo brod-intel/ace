@@ -4,6 +4,11 @@ PLUGIN_IMAGE=${PLUGIN_NAME}:${PLUGIN_TAG}
 
 docker -H unix://${SYSTEM_DOCKER_SOCK} pull ${PLUGIN_IMAGE}
 
+while (! ls /opt/ace/gluster/config.json > /dev/null 2>&1 ); do 
+  echo "Waiting for gluster config files."; 
+  sleep 5; 
+done
+
 echo -e "==> create rootfs directory in ./plugin/rootfs"
 mkdir -p ./plugin/rootfs
 cntr=${PLUGIN_NAME}-${PLUGIN_TAG}-$(date +'%Y%m%d-%H%M%S'); \

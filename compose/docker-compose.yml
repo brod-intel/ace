@@ -156,7 +156,6 @@ services:
     depends_on:
       - app-docker
       - gluster-rest
-      - gluster-security-enabler
       - core
 
   gluster-plugin-install:
