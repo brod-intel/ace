@@ -28,7 +28,6 @@ services:
     volumes:
       - core_volume:/opt
       - /etc/ssl:/etc/ssl
-      - gluster_database_vol:/var/lib/glusterd
       - /var/lib/app-docker:/var/lib/app-docker
       - /run:/run
 
