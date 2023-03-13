@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Cleanup Function
-perform_umount()
-{
+perform_umount(){
        echo " performing umount of mountpoints at /var/lib/docker/volumes/ ."
        for x in $(find /var/lib/docker/volumes/);
               do  if  mountpoint -q $x
@@ -37,17 +36,18 @@ perform_umount()
               umount $x
        done
        echo " performing umount of mountpoints at systemctl. Completed."
+       umount /mnt/clusterfs
 }
 
-echo "Performing Cleanup in ACE Serf Agent"
-docker exec ace_serf-agent_1 sh /opt/ace/bin/resetconsole
-echo "ACE serf agent cleanup completed"
+# echo "Performing Cleanup in ACE Serf Agent"
+# docker exec ace_serf-agent_1 sh /opt/ace/bin/resetconsole
+# echo "ACE serf agent cleanup completed"
 
-echo "Performing Unmount of all the mountpoints"
-if ( systemctl status ace 2> /dev/null ); then
-       systemctl stop ace
-fi
-/opt/ace/bin/stopace.sh && \
+# echo "Performing Unmount of all the mountpoints"
+# if ( systemctl status ace 2> /dev/null ); then
+#        systemctl stop ace
+# fi
+# /opt/ace/bin/stopace.sh && \
 perform_umount
 sleep 3
 perform_umount
@@ -55,25 +55,28 @@ rm -fr /mnt/*
 echo "Performing Unmount of all the mountpoints completed."
 
 echo "Performing Docker Volume Removal."
+docker volume rm ace_core_volume && \
+docker volume rm ace_docker_app_commands && \
 docker volume rm ace_docker_pid_vol && \
 docker volume rm ace_gluster_database_vol && \
+docker volume rm ace_gluster_creds_vol && \
 docker volume rm ace_serf_vol && \
 echo "Performing Docker Volume removal completed."
 
 echo "Performing Serf cache cleanup."
-rm /opt/ace/serf/data/tags.json > /dev/null 2>&1
+# rm /opt/ace/serf/data/tags.json > /dev/null 2>&1
 rm /var/log/ace/serf.log > /dev/null 2>&1
 rm /var/log/ace/membercleanup.log > /dev/null 2>&1
 
-echo "Performing docker volume prune."
-docker volume prune --force > /dev/null 2>&1 && \
-echo "Performing docker volume prune completed."
+# echo "Performing docker volume prune."
+# docker volume prune --force > /dev/null 2>&1 && \
+# echo "Performing docker volume prune completed."
 
-echo "Restoring App-Docker from /opt/ace."
-docker run -it --rm --entrypoint="" -v /opt:/opt -v /var/lib/app-docker:/tmp/app-docker edge/console-alpine:1.0 rsync -a --delete --delete-after /opt/ace/app-docker/ /tmp/app-docker/
-echo "Restoring App-Docker completed."
-echo ""
-echo ""
-echo ""
-echo "ACE Reset complete.  Run 'systemctl start ace' to start the service."
-echo ""
+# echo "Restoring App-Docker from /opt/ace."
+# docker run -it --rm --entrypoint="" -v /opt:/opt -v /var/lib/app-docker:/tmp/app-docker edge/console-alpine:1.0 rsync -a --delete --delete-after /opt/ace/app-docker/ /tmp/app-docker/
+# echo "Restoring App-Docker completed."
+# echo ""
+# echo ""
+# echo ""
+# echo "ACE Reset complete.  Run 'systemctl start ace' to start the service."
+# echo ""
