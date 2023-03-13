@@ -20,7 +20,7 @@ services:
       CAP_HOST_MANAGEMENT: 1
       EDGE_INSECURE_POLL: 1
       EDGE_ID: ${UUID}
-      EDGE_KEY: ${TOKEN}
+      EDGE_KEY: ${EDGE_KEY}
       EDGE: 1
       LOG_LEVEL: DEBUG
     volumes:
