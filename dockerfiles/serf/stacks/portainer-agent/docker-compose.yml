@@ -18,6 +18,7 @@ services:
       # AGENT_PORT: 9001
       # LOG_LEVEL: debug
       CAP_HOST_MANAGEMENT: 1
+      EDGE_INSECURE_POLL: 1
       EDGE_ID: ${UUID}
       EDGE_KEY: ${TOKEN}
       EDGE: 1
