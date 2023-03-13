@@ -23,6 +23,9 @@ else
   export AWS_CLI_PROXY=""
 fi
 
+# Enabling Gluster Security
+touch /var/lib/glusterd/secure-access
+
 # while (! docker stats --no-stream > /dev/null ); do
 #   # Docker takes a few seconds to initialize
 #   echo "Waiting for Docker to launch..." 2>&1 | tee -a ${CONSOLE_OUTPUT}
