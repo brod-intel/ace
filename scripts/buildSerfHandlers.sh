@@ -40,6 +40,8 @@ compile_updateconf() {
         echo "Compile updateconf.go"
         docker run --rm ${DOCKER_RUN_ARGS} -e "GOPATH=/data/" -v ${SERF_PATH}/../../gluster:/data/src cytopia/golint -set_exit_status /data/src/updateconf.go
         docker run --rm ${DOCKER_RUN_ARGS} -e "CGO_ENABLED=0" -v ${SERF_PATH}/../../gluster:/data/src ${GO_VERSION} go build -a -installsuffix cgo -o /data/src/updateconf /data/src/updateconf.go
+        cp ${SERF_PATH}/../../gluster/updateconf ${SERF_PATH}/../../../core/gluster/updateconf
+        chmod a+x ${SERF_PATH}/../../../core/gluster/updateconf
 }
 
 lint_handlers() {
