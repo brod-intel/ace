@@ -68,6 +68,11 @@ echo "Performing Serf cache cleanup."
 rm /var/log/ace/serf.log > /dev/null 2>&1
 rm /var/log/ace/membercleanup.log > /dev/null 2>&1
 
+rm -fr /etc/ssl/ace/ > /dev/null 2>&1
+rm /etc/ssl/gluster* > /dev/null 2>&1
+rm /etc/ssl/plugin* > /dev/null 2>&1
+rm /etc/ssl/serfhandler* > /dev/null 2>&1
+
 # echo "Performing docker volume prune."
 # docker volume prune --force > /dev/null 2>&1 && \
 # echo "Performing docker volume prune completed."
