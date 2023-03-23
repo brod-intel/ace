@@ -72,6 +72,7 @@ rm -fr /etc/ssl/ace/ > /dev/null 2>&1
 rm /etc/ssl/gluster* > /dev/null 2>&1
 rm /etc/ssl/plugin* > /dev/null 2>&1
 rm /etc/ssl/serfhandler* > /dev/null 2>&1
+rm /etc/ssl/dhparam.pem > /dev/null 2>&1
 
 # echo "Performing docker volume prune."
 # docker volume prune --force > /dev/null 2>&1 && \
